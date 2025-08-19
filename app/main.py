@@ -5,13 +5,17 @@ import threading
 lock = threading.Lock()
 
 def handle_client(connection):
-    while True:
-        data = connection.recv(1024)
-        if not data:
-            lock.release()     
-            break
-        connection.sendall(b"+PONG\r\n")
-    connection.close()
+    try:
+        while True:
+            data = connection.recv(1024)
+            if not data:
+                #lock.release()     
+                break
+            connection.sendall(b"+PONG\r\n")
+    except Exception as e:
+        print(f"Error handling client: {e}")
+    finally:
+        connection.close()
 
 def main():
     # You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -23,8 +27,10 @@ def main():
     try:
         while True:
             connection, _ = server_socket.accept() # wait for client  
-            lock.acquire()
+            #lock.acquire()
             start_new_thread(handle_client,(connection,))
+    except Exception as e:
+        print(f"Server error: {e}")
     finally:
         server_socket.close()
     try: # respond to multiple PINGs
