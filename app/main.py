@@ -20,9 +20,10 @@ def main():
     # Uncomment this to pass the first stage
     #
     server_socket = socket.create_server(("localhost", 6379), reuse_port=True)
-    connection, _ = server_socket.accept() # wait for client  
-    lock.acquire()
-    start_new_thread(handle_client,(connection,))
+    while True:
+        connection, _ = server_socket.accept() # wait for client  
+        lock.acquire()
+        start_new_thread(handle_client,(connection,))
     try: # respond to multiple PINGs
         while True:
             data = connection.recv(1024)
