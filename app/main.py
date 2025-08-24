@@ -2,6 +2,7 @@ import socket  # noqa: F401
 from _thread import start_new_thread
 import threading
 
+store = {}
 def handle_client(connection):
     try:
         while True:
@@ -20,9 +21,22 @@ def handle_client(connection):
                 message = " ".join(parts[4:])  # join in case of multiple words
                 response = f"${len(message)}\r\n{message}\r\n"
                 connection.send(response.encode())
+            elif command == "SET" and len(parts) > 3:
+                key = parts[3]
+                value = " ".join(parts[4:])
+                store[key] = value 
+                response = f"+OK\r\n"
+                connection.send(response.encode())      
+            elif command == "GET"  and len(parts) > 3:
+                key = parts[3]
+                if key in store:
+                    value = store[key]
+                    response = f"${len(value)}\r\n{value}\r\n"
+                else:
+                    response = "$-1\r\n"
+                connection.send(response.encode())
             else:
-                connection.send(b"-ERR unknown command\r\n")
-      
+                connection.send(b"-ERR unknown command\r\n")      
     except Exception as e:
         print(f"Error handling client: {e}")
     finally:
