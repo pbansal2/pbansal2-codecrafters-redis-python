@@ -8,7 +8,21 @@ def handle_client(connection):
             data = connection.recv(1024)
             if not data:    
                 break
-            connection.sendall(b"+PONG\r\n")
+            data:str = data.decode().strip()
+            parts = data.split()
+            if not parts:
+                continue
+            command = parts[2].upper()
+
+            if command == "PING":
+                connection.sendall(b"+PONG\r\n")
+            elif command == "ECHO" and len(parts) > 1:
+                message = " ".join(parts[4:])  # join in case of multiple words
+                response = f"${len(message)}\r\n{message}\r\n"
+                connection.send(response.encode())
+            else:
+                connection.send(b"-ERR unknown command\r\n")
+      
     except Exception as e:
         print(f"Error handling client: {e}")
     finally:
@@ -26,7 +40,7 @@ def main():
         print(f"Server error: {e}")
     finally:
         server_socket.close()
-    '''
+    
     try: # respond to multiple PINGs
         while True:
             data = connection.recv(1024)
@@ -35,7 +49,6 @@ def main():
             connection.sendall(b"+PONG\r\n")
     finally:
         connection.close()
-    '''
 
 
 
