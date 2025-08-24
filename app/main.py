@@ -16,7 +16,7 @@ def handle_client(connection):
 
             if command == "PING":
                 connection.sendall(b"+PONG\r\n")
-            elif command == "ECHO" and len(parts) > 1:
+            elif command == "ECHO" and len(parts) > 1: # redis protocol parser - stage 5
                 message = " ".join(parts[4:])  # join in case of multiple words
                 response = f"${len(message)}\r\n{message}\r\n"
                 connection.send(response.encode())
