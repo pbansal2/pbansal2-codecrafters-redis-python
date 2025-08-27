@@ -29,6 +29,7 @@ def handle_client(connection):
                 connection.send(response.encode())      
             elif command == "GET"  and len(parts) > 2:
                 key = parts[3]
+                print(f"{key}")
                 if key in store:
                     value = store[key]
                     print(f"{value}")
