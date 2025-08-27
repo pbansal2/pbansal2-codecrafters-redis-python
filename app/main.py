@@ -25,6 +25,7 @@ def handle_client(connection):
                 key = parts[3]
                 print(f"{key}")
                 value = " ".join(parts[4:])
+                print(f"{value}")
                 store[key] = value 
                 response = f"+OK\r\n"
                 connection.send(response.encode())      
@@ -34,7 +35,7 @@ def handle_client(connection):
                 if key in store:
                     value = store[key]
                     print(f"{value}")
-                    response = f"\r\n{value}\r\n"
+                    response = f"${len(value)}\r\n{value}\r\n"
                 else:
                     response = "$-1\r\n"
                 connection.send(response.encode())
