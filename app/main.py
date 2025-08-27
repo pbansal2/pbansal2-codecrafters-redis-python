@@ -31,7 +31,7 @@ def handle_client(connection):
                 key = parts[3]
                 if key in store:
                     value = store[key]
-                    print(f"value")
+                    print(f"{value}")
                     response = f"${len(value)}\r\n{value}\r\n"
                 else:
                     response = "$-1\r\n"
