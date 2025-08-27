@@ -22,14 +22,14 @@ def handle_client(connection):
                 response = f"${len(message)}\r\n{message}\r\n"
                 connection.send(response.encode())
             elif command == "SET" and len(parts) > 3:
-                key = parts[3]
+                key = parts[3:]
                 print(f"{key}")
                 value = " ".join(parts[4:])
                 store[key] = value 
                 response = f"+OK\r\n"
                 connection.send(response.encode())      
             elif command == "GET"  and len(parts) > 2:
-                key = parts[3]
+                key = parts[3:]
                 print(f"{key}")
                 if key in store:
                     value = store[key]
