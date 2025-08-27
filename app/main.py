@@ -34,7 +34,7 @@ def handle_client(connection):
                 if key in store:
                     value = store[key]
                     print(f"{value}")
-                    response = f"${len(value)}\r\n{value}\r\n"
+                    response = f"{value}\r\n"
                 else:
                     response = "$-1\r\n"
                 connection.send(response.encode())
