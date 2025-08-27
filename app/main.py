@@ -24,7 +24,7 @@ def handle_client(connection):
             elif command == "SET" and len(parts) > 3:
                 key = parts[3]
                 print(f"{key}")
-                value = " ".join(parts[5:])
+                value = " ".join(parts[6:])
                 print(f"{value}")
                 store[key] = value 
                 response = f"+OK\r\n"
