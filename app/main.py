@@ -23,6 +23,7 @@ def handle_client(connection):
                 connection.send(response.encode())
             elif command == "SET" and len(parts) > 3:
                 key = parts[3]
+                print(f"{key}")
                 value = " ".join(parts[4:])
                 store[key] = value 
                 response = f"+OK\r\n"
