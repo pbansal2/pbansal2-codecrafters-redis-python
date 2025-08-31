@@ -62,6 +62,7 @@ def handle_client(connection):
             elif command == "RPUSH" and len(parts) > 2:
                 key = parts[3]
                 value = parts[6]
+                print(f"{value}")
                 if key not in store:
                     store[key] = []
                 store[key].extend(value)
