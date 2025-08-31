@@ -27,7 +27,7 @@ def handle_client(connection):
                 value = " ".join(parts[6:7])
                 if len(parts) > 8 and parts[8].lower == "px":
                     ttl = int(parts[10])
-                    threading.Timer(ttl / 10000, store.pop, args=[key]).start()                 
+                    threading.Timer(ttl / 100000, store.pop, args=[key]).start()                 
                 print(f"{value}")
                 store[key] = value 
                 response = f"+OK\r\n"
