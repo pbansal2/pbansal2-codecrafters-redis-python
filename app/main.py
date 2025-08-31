@@ -30,6 +30,7 @@ def handle_client(connection):
                 if len(parts) > 8 and parts[8].lower == "px":
                     ttl = int(parts[10])
                     expiry[key] = time.time() + ttl / 1000
+                    print(f"{expiry[key]}")
                     # Optional cleanup timers
                     threading.Timer(ttl / 1000, lambda k=key: store.pop(k, None)).start()
                     threading.Timer(ttl / 1000, lambda k=key: expiry.pop(k, None)).start()
@@ -51,7 +52,6 @@ def handle_client(connection):
                 else:
                     value = store.get(key,None)
                 print(f"{value}")
-                print(f"{expiry[key]}")
                 if value is not None:
                     response = f"${len(value)}\r\n{value}\r\n"
                 else:
