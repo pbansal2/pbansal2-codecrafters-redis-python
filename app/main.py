@@ -29,7 +29,7 @@ def handle_client(connection):
                 value = " ".join(parts[6:7])
                 print(f"{len(parts)}")
                 #print(f"parts[8]=<{parts[7]}>, lower=<{parts[8].lower()}>")
-                if len(parts) > 7 and parts[8].lower() == "px":
+                if len(parts) > 7 and parts[8].lower() == "px": # Stage YZ1 
                     ttl = int(parts[10])
                     expiry[key] = time.time() + ttl / 1000
                     #print(f"{expiry[key]}")
@@ -59,6 +59,11 @@ def handle_client(connection):
                 else:
                     response = "$-1\r\n"
                 connection.send(response.encode())
+            elif command == "RPUSH" and len(parts) > 3:
+                list_key = []
+                list_key.append(parts[6])
+                if len(list_key) == 1:
+                    response = ":1\r\n"
             else:
                 connection.send(b"-ERR unknown command\r\n")      
     except Exception as e:
