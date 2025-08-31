@@ -21,21 +21,24 @@ def handle_client(connection):
                 message = " ".join(parts[4:])  # join in case of multiple words
                 response = f"${len(message)}\r\n{message}\r\n"
                 connection.send(response.encode())
-            elif command == "SET" and len(parts) > 3:
+            elif command == "SET" and len(parts) > 3: # stage LA7 (SET and GET)
                 key = parts[3]
                 print(f"{key}")
-                value = " ".join(parts[6:])
+                value = " ".join(parts[6])
+                if len(parts) > 8 and parts[8].lower == "px":
+                    ttl = int(parts[10])
+                    threading.Timer(ttl / 1000, store.pop, args=[key]).start()                 
                 print(f"{value}")
                 store[key] = value 
                 response = f"+OK\r\n"
-                connection.send(response.encode())      
+                connection.send(response.encode())
             elif command == "GET"  and len(parts) > 2:
                 key = parts[3]
                 print(f"{key}")
                 if key in store:
                     value = store[key]
                     print(f"{value}")
-                    response = f"{value}\r\n"
+                    response = f"${len(value)}\r\n{value}\r\n"
                 else:
                     response = "$-1\r\n"
                 connection.send(response.encode())
