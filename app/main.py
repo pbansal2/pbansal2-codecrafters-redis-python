@@ -65,7 +65,7 @@ def handle_client(connection):
                 print(f"{value}")
                 if key not in store:
                     store[key] = []
-                store[key].extend(value)
+                store[key].append(value)
                 response = f":{len(store)}\r\n"
                 connection.send(response.encode())
             else:
