@@ -60,7 +60,7 @@ def handle_client(connection):
                     response = "$-1\r\n"
                 connection.send(response.encode())
             elif command == "RPUSH" and len(parts) > 3:
-                list_key = []
+                list_key = parts[4]
                 list_key.append(parts[6])
                 if len(list_key) == 1:
                     response = ":1\r\n"
