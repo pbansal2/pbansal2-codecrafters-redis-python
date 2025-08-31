@@ -28,11 +28,11 @@ def handle_client(connection):
                 print(f"{key}")
                 value = " ".join(parts[6:7])
                 print(f"{len(parts)}")
-                print(f"parts[7]=<{parts[7]}>, lower=<{parts[7].lower()}>")
+                print(f"parts[8]=<{parts[7]}>, lower=<{parts[8].lower()}>")
                 if len(parts) > 7 and parts[8].lower() == "px":
                     ttl = int(parts[10])
                     expiry[key] = time.time() + ttl / 1000
-                    print(f"{expiry[key]}")
+                    #print(f"{expiry[key]}")
                     # Optional cleanup timers
                     threading.Timer(ttl / 1000, lambda k=key: store.pop(k, None)).start()
                     threading.Timer(ttl / 1000, lambda k=key: expiry.pop(k, None)).start()
