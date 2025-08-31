@@ -59,11 +59,14 @@ def handle_client(connection):
                 else:
                     response = "$-1\r\n"
                 connection.send(response.encode())
-            elif command == "RPUSH" and len(parts) > 3:
-                list_key = parts[4]
-                list_key.append(parts[6])
-                if len(list_key) == 1:
-                    response = ":1\r\n"
+            elif command == "RPUSH" and len(parts) > 2:
+                key = parts[3]
+                value = parts[6]
+                if key not in store:
+                    store[key] = []
+                store[key].values()
+                response = f":{len(store[key])}\r\n"
+                connection.send(response.encode())
             else:
                 connection.send(b"-ERR unknown command\r\n")      
     except Exception as e:
