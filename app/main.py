@@ -27,7 +27,7 @@ def handle_client(connection):
                 key = parts[3]
                 print(f"{key}")
                 value = " ".join(parts[6:7])
-                if len(parts) > 8 and parts[8].lower == "px":
+                if len(parts) >= 8 and parts[8].lower == "px":
                     ttl = int(parts[10])
                     expiry[key] = time.time() + ttl / 1000
                     print(f"{expiry[key]}")
