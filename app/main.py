@@ -35,9 +35,9 @@ def handle_client(connection):
             elif command == "GET"  and len(parts) > 2:
                 key = parts[3]
                 print(f"{key}")
-                if key in store:
-                    value = store[key]
-                    print(f"{value}")
+                value = store.get(key,None)
+                print(f"{value}")
+                if value is not None:
                     response = f"${len(value)}\r\n{value}\r\n"
                 else:
                     response = "$-1\r\n"
