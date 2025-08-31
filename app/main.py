@@ -1,8 +1,10 @@
 import socket  # noqa: F401
 from _thread import start_new_thread
 import threading
+import time
 
 store = {}
+expiry = {}
 def handle_client(connection):
     try:
         while True:
@@ -27,15 +29,24 @@ def handle_client(connection):
                 value = " ".join(parts[6:7])
                 if len(parts) > 8 and parts[8].lower == "px":
                     ttl = int(parts[10])
-                    threading.Timer(ttl / 100000, store.pop, args=[key]).start()                 
+                    expiry[key] = time.time() + ttl / 1000
+                    threading.Timer(ttl / 1000, store.pop, args=[key]).start()   
+                else:
+                    expiry.pop(key, None)              
                 print(f"{value}")
                 store[key] = value 
                 response = f"+OK\r\n"
                 connection.send(response.encode())
             elif command == "GET"  and len(parts) > 2:
-                key = parts[3]
+                key = parts[3]      
                 print(f"{key}")
-                value = store.get(key,None)
+                # Check expiration
+                if key in expiry and time.time() > expiry[key]:
+                    store.pop(key, None)
+                    expiry.pop(key, None)
+                    value = None
+                else:
+                    value = store.get(key,None)
                 print(f"{value}")
                 if value is not None:
                     response = f"${len(value)}\r\n{value}\r\n"
