@@ -24,7 +24,7 @@ def handle_client(connection):
             elif command == "SET" and len(parts) > 3: # stage LA7 (SET and GET)
                 key = parts[3]
                 print(f"{key}")
-                value = " ".join(parts[6])
+                value = " ".join(parts[6:])
                 if len(parts) > 8 and parts[8].lower == "px":
                     ttl = int(parts[10])
                     threading.Timer(ttl / 1000, store.pop, args=[key]).start()                 
