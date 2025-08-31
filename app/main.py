@@ -66,7 +66,7 @@ def handle_client(connection):
                 if key not in store:
                     store[key] = []
                 store[key].extend(value)
-                response = f":{len(store[key])}\r\n"
+                response = f":{len(store)}\r\n"
                 connection.send(response.encode())
             else:
                 connection.send(b"-ERR unknown command\r\n")      
