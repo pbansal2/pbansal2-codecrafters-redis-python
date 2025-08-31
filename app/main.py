@@ -59,7 +59,7 @@ def handle_client(connection):
                 else:
                     response = "$-1\r\n"
                 connection.send(response.encode())
-            elif command == "RPUSH" and len(parts) > 2:
+            elif command == "RPUSH" and len(parts) > 2: # lists - MH6
                 key = parts[3]
                 value = parts[6]
                 print(f"{value}")
