@@ -29,8 +29,8 @@ def handle_client(connection):
                 value = " ".join(parts[6:7])
                 print(f"{len(parts)}")
                 print(f"parts[7]=<{parts[7]}>, lower=<{parts[7].lower()}>")
-                if len(parts) > 7 and parts[7].lower() == "px":
-                    ttl = int(parts[8])
+                if len(parts) > 7 and parts[8].lower() == "px":
+                    ttl = int(parts[10])
                     expiry[key] = time.time() + ttl / 1000
                     print(f"{expiry[key]}")
                     # Optional cleanup timers
